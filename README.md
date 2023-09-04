@@ -14,8 +14,6 @@
 
 ## **Links**
 
-## **Publications**
-
 
 [1]: mailto:vishnuprasadk@alumni.iitm.ac.in
 [2]: https://scholar.google.com/citations?user=KUmun1kAAAAJ&hl=en
