@@ -2,8 +2,7 @@
 
 ### Post Doctoral Researcher @ Institute of Physical Chemistry ([IChF](https://ichf.edu.pl/en)), Polish Academy of Sciences, Warsaw
 
-[![email](https://github.com/vishnu-prasad-kurupath/vishnu-prasad-kurupath.github.io/assets/129292632/3a545fdd-1bfe-4704-b78b-166f4e3f8942)][1]
-[![gscholar](https://github.com/vishnu-prasad-kurupath/vishnu-prasad-kurupath.github.io/assets/129292632/2bb6e743-9f6c-4842-829a-e3dbd09af345)][2]
+[![email](https://github.com/vishnu-prasad-kurupath/vishnu-prasad-kurupath.github.io/assets/129292632/3a545fdd-1bfe-4704-b78b-166f4e3f8942)][1][![gscholar](https://github.com/vishnu-prasad-kurupath/vishnu-prasad-kurupath.github.io/assets/129292632/2bb6e743-9f6c-4842-829a-e3dbd09af345)][2]
 ---
 
 ## **Experience**
