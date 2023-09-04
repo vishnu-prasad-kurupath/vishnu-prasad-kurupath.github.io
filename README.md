@@ -12,9 +12,9 @@
 - **July 2015 -> Oct 2021:** _Doctoral Student (Thesis: Water Desalination using Carbon Based Nanoporous Membranes)_, Department of Applied Mechanics ([APM-IITM](https://apm.iitm.ac.in/index.html)), Indian Institute of Technology Madras, Chennai, India
 - **August 2013 -> July 2015:** _Masters Student_, Department of Mechanical Engineering, Government Engineering College Thrissur, India
 
-## **Publications**
-
 ## **Links**
+
+## **Publications**
 
 
 [1]: mailto:vishnu.prasad.1729@gmail.com
