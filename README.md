@@ -2,7 +2,7 @@
 
 ### Post Doctoral Researcher @ Institute of Physical Chemistry, Polish Academy of Sciences, Warsaw
 
-![https://scholar.google.com/citations?user=KUmun1kAAAAJ&hl=en](google.svg)
+
 ---
 
 ## **Experience**
