@@ -17,6 +17,6 @@
 ## **Publications**
 
 
-[1]: mailto:vishnu.prasad.1729@gmail.com
+[1]: mailto:vishnuprasadk@alumni.iitm.ac.in
 [2]: https://scholar.google.com/citations?user=KUmun1kAAAAJ&hl=en
 [3]: https://www.linkedin.com/in/vishnu-prasad-kurupath/
