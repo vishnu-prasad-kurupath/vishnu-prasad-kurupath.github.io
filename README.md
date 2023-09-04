@@ -9,7 +9,7 @@
 - Sep 2023: Post Doctoral Researcher, Physical Chemistry of Complex Systems Group, Institute of Physical Chemistry, Polish Academy of Sciences, Warsaw, Poland
 - Feb 2022 -> Feb 2023: Post Doctoral Researcher, Physics and Statistical Mechanics Group, Laboratoire interdisciplinaire de Physique (LIPhy), Grenoble, France
 - April 2021 -> Dec 2021: Faculty Associate, Center for Computational Engineering and Networking (CEN), Amrita Vishwa Vidyapeetham, Coimbatore, India
-- July 2015 -> Oct 2021: *Doctoral Student*(Water Desalination using Carbon Based Nanoporous Membranes), Department of Applied Mechanics, Indian Institute of Technology Madras, Chennai, India
+- July 2015 -> Oct 2021: *Doctoral Student* (Water Desalination using Carbon Based Nanoporous Membranes), Department of Applied Mechanics, Indian Institute of Technology Madras, Chennai, India
 - August 2013 -> July 2015: Master of Technology, Department of Mechanical Engineering, Government Engineering College Thrissur, India
 
 ## **Publications**
