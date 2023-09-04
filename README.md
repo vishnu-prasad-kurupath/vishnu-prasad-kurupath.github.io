@@ -2,7 +2,7 @@
 
 ### Post Doctoral Researcher @ Institute of Physical Chemistry, Polish Academy of Sciences, Warsaw
 
-
+[![google](https://github.com/vishnu-prasad-kurupath/vishnu-prasad-kurupath.github.io/assets/129292632/6a4e930f-e08a-400c-8fb6-e40b9de9bc1c)[1]]
 ---
 
 ## **Experience**
@@ -15,3 +15,5 @@
 ## **Publications**
 
 
+
+[1]: https://scholar.google.com/citations?user=KUmun1kAAAAJ&hl=en
