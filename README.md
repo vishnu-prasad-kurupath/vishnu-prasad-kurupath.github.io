@@ -1,6 +1,6 @@
 # **Vishnu Prasad Kurupath**
 
-### Post Doctoral Researcher @ Institute of Physical Chemistry, Polish Academy of Sciences, Warsaw
+### Post Doctoral Researcher @ Institute of Physical Chemistry ([IChF](https://ichf.edu.pl/en)), Polish Academy of Sciences, Warsaw
 
 [![gscholar](https://github.com/vishnu-prasad-kurupath/vishnu-prasad-kurupath.github.io/assets/129292632/af321629-dd18-4fe4-a22e-af8d1185d131)][1]
 ---
@@ -14,6 +14,7 @@
 
 ## **Publications**
 
+## **Links**
 
 
 [1]: https://scholar.google.com/citations?user=KUmun1kAAAAJ&hl=en
