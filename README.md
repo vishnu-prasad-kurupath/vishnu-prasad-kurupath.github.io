@@ -14,6 +14,7 @@
 
 ## **Links**
 - [**cncgen**](https://github.com/vishnu-prasad-kurupath/cncgen): Make Carbon Nanocones using [VMD](https://www.ks.uiuc.edu/Research/vmd/)
+[**test**](./test.md)
 
 [1]: mailto:vishnuprasadk@alumni.iitm.ac.in
 [2]: https://scholar.google.com/citations?user=KUmun1kAAAAJ&hl=en
