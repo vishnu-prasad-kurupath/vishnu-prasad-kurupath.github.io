@@ -33,7 +33,10 @@
       }
 
       .sidebar-header {
-        margin-bottom: 1rem;
+        margin-bottom: 0.75rem;
+        text-align: center;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
       }
 
       .sidebar-title {
@@ -43,7 +46,15 @@
 
       .sidebar-author {
         font-size: 0.8rem;
-        opacity: 0.8;
+        opacity: 0.85;
+        margin-top: 0.25rem;
+      }
+
+      /* Divider between header and menu */
+      .sidebar-divider {
+        height: 1px;
+        background: #444;
+        margin: 0.5rem 0 0.75rem;
       }
 
       .sidebar-menu {
@@ -55,7 +66,7 @@
       }
 
       .sidebar-menu li {
-        margin: 0.25rem 0;
+        margin: 0.15rem 0;
       }
 
       .sidebar-menu button {
@@ -63,11 +74,12 @@
         text-align: left;
         border: none;
         background: transparent;
-        color: inherit;
-        padding: 0.25rem 0.5rem;
+        padding: 0.2rem 0.4rem;
         cursor: pointer;
         border-radius: 4px;
         font: inherit;
+        color: #888;            /* inactive: dull grey */
+        transition: background 0.15s ease, color 0.15s ease;
       }
 
       .sidebar-menu button:hover {
@@ -75,24 +87,26 @@
       }
 
       .sidebar-menu button.active {
-        background: #4caf50;
-        color: #fff;
+        color: #fff;            /* active: bright */
+        font-weight: 600;
+        background: #444;
       }
 
       .sidebar-footer {
-        margin-top: 0.75rem;
+        margin-top: 0.6rem;
         font-size: 0.8rem;
         opacity: 0.9;
+        text-align: center;
       }
 
       .sidebar-footer .sidebar-slide-number {
         display: inline-block;
-        margin-top: 0.25rem;
+        margin-top: 0.1rem;
         font-weight: 700;
         color: #fff;
       }
 
-      /* Push Reveal stage to the right so it doesn’t sit under the sidebar */
+      /* Shift Reveal stage to the right so it doesn’t sit under the sidebar */
       .reveal {
         margin-left: 240px;
         padding-right: 1rem;
@@ -107,11 +121,11 @@
         <div class="sidebar-title">Short Title</div>
         <div class="sidebar-author">V. P. Kurupath</div>
       </div>
+      <div class="sidebar-divider"></div>
       <ul class="sidebar-menu" id="sidebar-menu">
-        <!-- Filled by JS based on slides -->
+        <!-- Filled by JS -->
       </ul>
       <div class="sidebar-footer">
-        <div>Slide:</div>
         <div class="sidebar-slide-number">–</div>
       </div>
     </nav>
@@ -119,13 +133,13 @@
     <!-- Reveal root -->
     <div class="reveal">
       <div class="slides">
-        <!-- Top-level slides; data-title is used for sidebar text -->
+        <!-- Use data-title for sidebar text (can differ from h2 if you want) -->
         <section data-title="Introduction">
           <h2>Introduction</h2>
           <p>Welcome to the demo deck.</p>
         </section>
 
-        <section data-title="Problem Statement">
+        <section data-title="Problem statement">
           <h2>Problem Statement</h2>
           <p>Describe the main problem here.</p>
         </section>
@@ -145,7 +159,7 @@
     <!-- Reveal core -->
     <script src="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.js"></script>
     <script>
-      // Initialize Reveal with default bottom-right slide number and progress
+      // Initialize Reveal with default bottom-right slide number
       Reveal.initialize({
         hash: true,
         controls: true,
@@ -192,7 +206,7 @@
         });
       }
 
-      // Mirror Reveal's slide number text into the sidebar footer
+      // Mirror Reveal's slide number into the sidebar footer
       function updateSidebarSlideNumber() {
         const revealNumber = document.querySelector('.reveal .slide-number');
         const sidebarNumber = document.querySelector('.sidebar-slide-number');
@@ -200,7 +214,6 @@
         if (revealNumber) {
           sidebarNumber.textContent = revealNumber.textContent.trim();
         } else {
-          // Fallback: compute "current/total" from state
           const state = Reveal.getState();
           const total = document.querySelectorAll('.reveal .slides > section').length;
           const current = (state.indexh || 0) + 1;
