@@ -125,6 +125,15 @@
         margin-left: -8vw;
       }
 
+      .no-sidebar .reveal {
+        margin-left: 0;
+      }
+
+      /* Optionally hide sidebar entirely in that state */
+      .no-sidebar #sidebar {
+        display: none;
+      }
+
     </style>
   </head>
 
@@ -187,6 +196,19 @@
         slideNumber: 'c/t'   // keep Reveal's own overlay [web:1][web:5]
       });
 
+      function updateSidebarVisibility() {
+          const state = Reveal.getState();
+          const currentSlide = Reveal.getCurrentSlide();
+          const body = document.body;
+      
+          // If we are on the title slide (class "title-slide"), hide sidebar
+          if (currentSlide && currentSlide.classList.contains('title-slide')) {
+            body.classList.add('no-sidebar');
+          } else {
+            body.classList.remove('no-sidebar');
+          }
+        }
+      
       // Build sidebar menu from top-level slides
       function buildSidebarMenu() {
         const menu = document.getElementById('sidebar-menu');
@@ -242,10 +264,14 @@
       }
 
       Reveal.on('ready', () => {
-        buildSidebarMenu();
+        updateSidebarVisibility();
+        buildSidebarMenu();          // your existing function
+        updateSidebarActive();       // your existing function
+        updateSidebarSlideNumber();  // your existing function
       });
-
+      
       Reveal.on('slidechanged', () => {
+        updateSidebarVisibility();
         updateSidebarActive();
         updateSidebarSlideNumber();
       });
