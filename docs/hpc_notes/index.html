@@ -2,24 +2,20 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Deck with Sidebar Menu</title>
+    <title>Reveal with Custom Sidebar</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
     <!-- Reveal core from CDN -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/theme/black.css" id="theme">
 
-    <!-- Simplemenu base CSS -->
-    <link rel="stylesheet" href="../simplemenu/simplemenu.css">
-
-    <!-- Put your custom CSS AFTER simplemenu.css -->
     <style>
       body {
         margin: 0;
       }
 
-      /* Force the Simplemenu bar to be a fixed left sidebar */
-      .menubar {
+      /* Sidebar layout */
+      #sidebar {
         position: fixed;
         top: 0;
         left: 0;
@@ -32,6 +28,8 @@
         box-sizing: border-box;
         padding: 1rem 0.75rem;
         z-index: 20;
+        font-family: system-ui, sans-serif;
+        font-size: 0.9rem;
       }
 
       .sidebar-header {
@@ -48,101 +46,176 @@
         opacity: 0.8;
       }
 
-      .menubar .menu {
+      .sidebar-menu {
+        list-style: none;
+        padding: 0;
+        margin: 0;
         flex: 1 1 auto;
         overflow-y: auto;
       }
 
-      /* Slide number area at bottom of sidebar */
+      .sidebar-menu li {
+        margin: 0.25rem 0;
+      }
+
+      .sidebar-menu button {
+        width: 100%;
+        text-align: left;
+        border: none;
+        background: transparent;
+        color: inherit;
+        padding: 0.25rem 0.5rem;
+        cursor: pointer;
+        border-radius: 4px;
+        font: inherit;
+      }
+
+      .sidebar-menu button:hover {
+        background: #333;
+      }
+
+      .sidebar-menu button.active {
+        background: #4caf50;
+        color: #fff;
+      }
+
       .sidebar-footer {
         margin-top: 0.75rem;
         font-size: 0.8rem;
         opacity: 0.9;
       }
 
-      .sidebar-footer .slide-number {
+      .sidebar-footer .sidebar-slide-number {
         display: inline-block;
         margin-top: 0.25rem;
         font-weight: 700;
-        color: #fff;         /* ensure visible on dark background */
+        color: #fff;
       }
 
       /* Push Reveal stage to the right so it doesn’t sit under the sidebar */
       .reveal {
-        margin-left: 240px !important;
-        padding: 0 1rem 0 0; /* small right padding */
+        margin-left: 240px;
+        padding-right: 1rem;
       }
-
     </style>
   </head>
 
   <body>
+    <!-- Custom sidebar -->
+    <nav id="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-title">Short Title</div>
+        <div class="sidebar-author">V. P. Kurupath</div>
+      </div>
+      <ul class="sidebar-menu" id="sidebar-menu">
+        <!-- Filled by JS based on slides -->
+      </ul>
+      <div class="sidebar-footer">
+        <div>Slide:</div>
+        <div class="sidebar-slide-number">–</div>
+      </div>
+    </nav>
+
+    <!-- Reveal root -->
     <div class="reveal">
       <div class="slides">
-        <section data-name="Intro">
+        <!-- Top-level slides; data-title is used for sidebar text -->
+        <section data-title="Introduction">
           <h2>Introduction</h2>
-          <p>Welcome to the deck.</p>
+          <p>Welcome to the demo deck.</p>
         </section>
 
-        <section data-name="Background">
-          <h2>Background</h2>
-          <p>Some context here.</p>
+        <section data-title="Problem Statement">
+          <h2>Problem Statement</h2>
+          <p>Describe the main problem here.</p>
         </section>
 
-        <section data-name="Results">
+        <section data-title="Results">
           <h2>Results</h2>
-          <p>Key findings.</p>
+          <p>Summarize key results.</p>
         </section>
 
-        <section data-name="Conclusion">
+        <section data-title="Conclusion">
           <h2>Conclusion</h2>
-          <p>Wrap-up and outlook.</p>
+          <p>Wrap-up and next steps.</p>
         </section>
       </div>
     </div>
 
     <!-- Reveal core -->
     <script src="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.js"></script>
-
-    <!-- Shared Simplemenu JS -->
-    <script src="../simplemenu/simplemenu.js"></script>
-
     <script>
+      // Initialize Reveal with default bottom-right slide number and progress
       Reveal.initialize({
         hash: true,
         controls: true,
         progress: true,
-        slideNumber: 'c/t',
-      
-        simplemenu: {
-          barhtml: {
-            header:
-              "<div class='menubar'>" +
-                "<div class='sidebar-header'>" +
-                  "<div class='sidebar-title'>Short Title</div>" +
-                  "<div class='sidebar-author'>V. P. Kurupath</div>" +
-                "</div>" +
-                "<ul class='menu'></ul>" +
-              "</div>",
-            footer: ""
-          },
-          csspath: "",
-          flat: false
-        },
-      
-        plugins: [ Simplemenu ]
+        slideNumber: 'c/t'   // keep Reveal's own overlay [web:1][web:5]
       });
 
-  // Copy Reveal's hidden slide number into the sidebar slot
-      function syncSidebarSlideNumber() {
-        const revealNumber = document.querySelector('.reveal .slide-number');      // hidden overlay
-        const sidebarNumber = document.querySelector('.sidebar-slide-number');     // in sidebar
-        if (!revealNumber || !sidebarNumber) return;
-        sidebarNumber.textContent = revealNumber.textContent.trim();
+      // Build sidebar menu from top-level slides
+      function buildSidebarMenu() {
+        const menu = document.getElementById('sidebar-menu');
+        menu.innerHTML = '';
+
+        const slides = document.querySelectorAll('.reveal .slides > section');
+        slides.forEach((slide, index) => {
+          let title = slide.getAttribute('data-title');
+          if (!title) {
+            const h = slide.querySelector('h1, h2, h3, h4, h5, h6');
+            title = h ? h.textContent.trim() : `Slide ${index + 1}`;
+          }
+
+          const li = document.createElement('li');
+          const btn = document.createElement('button');
+          btn.textContent = title;
+
+          btn.addEventListener('click', () => {
+            Reveal.slide(index, 0);
+          });
+
+          li.appendChild(btn);
+          menu.appendChild(li);
+        });
+
+        updateSidebarActive();
+        updateSidebarSlideNumber();
       }
 
-      Reveal.on('ready', syncSidebarSlideNumber);
-      Reveal.on('slidechanged', syncSidebarSlideNumber);
+      // Highlight active slide in sidebar
+      function updateSidebarActive() {
+        const state = Reveal.getState();
+        const hIndex = state.indexh || 0;
+        const buttons = document.querySelectorAll('#sidebar-menu button');
+        buttons.forEach((btn, i) => {
+          btn.classList.toggle('active', i === hIndex);
+        });
+      }
+
+      // Mirror Reveal's slide number text into the sidebar footer
+      function updateSidebarSlideNumber() {
+        const revealNumber = document.querySelector('.reveal .slide-number');
+        const sidebarNumber = document.querySelector('.sidebar-slide-number');
+        if (!sidebarNumber) return;
+        if (revealNumber) {
+          sidebarNumber.textContent = revealNumber.textContent.trim();
+        } else {
+          // Fallback: compute "current/total" from state
+          const state = Reveal.getState();
+          const total = document.querySelectorAll('.reveal .slides > section').length;
+          const current = (state.indexh || 0) + 1;
+          sidebarNumber.textContent = current + '/' + total;
+        }
+      }
+
+      Reveal.on('ready', () => {
+        buildSidebarMenu();
+      });
+
+      Reveal.on('slidechanged', () => {
+        updateSidebarActive();
+        updateSidebarSlideNumber();
+      });
     </script>
   </body>
 </html>
