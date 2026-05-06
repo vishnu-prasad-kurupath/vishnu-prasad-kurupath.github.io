@@ -2,72 +2,161 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Reveal + Simplemenu (CDN Reveal)</title>
+    <title>Deck with Sidebar Menu</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-    <!-- Reveal core styles from CDN -->
+    <!-- Reveal core from CDN -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/theme/black.css" id="theme">
 
-    <!-- Simplemenu CSS (either from plugin or your own copy) -->
-    <link rel="stylesheet" href="../simplemenu.css">
-    <!-- If you don't want to copy CSS, you can instead style the menu yourself and set csspath: false in options. [web:90] -->
+    <!-- Simplemenu base CSS -->
+    <link rel="stylesheet" href="../simplemenu/simplemenu.css">
+
+    <style>
+      body {
+        margin: 0;
+      }
+
+      /* Make the Simplemenu "menubar" a left sidebar */
+      .menubar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 240px;
+        height: 100vh;
+        background: #111;
+        color: #eee;
+        display: flex;
+        flex-direction: column;
+        box-sizing: border-box;
+        padding: 1rem 0.75rem;
+        z-index: 20;
+      }
+
+      .sidebar-header {
+        margin-bottom: 1rem;
+      }
+
+      .sidebar-title {
+        font-size: 1rem;
+        font-weight: 700;
+      }
+
+      .sidebar-author {
+        font-size: 0.8rem;
+        opacity: 0.8;
+      }
+
+      /* Menu list in the middle */
+      .menubar .menu {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        flex: 1 1 auto;
+        overflow-y: auto;
+      }
+
+      .menubar .menu li {
+        margin: 0.25rem 0;
+      }
+
+      .menubar .menu a {
+        display: block;
+        padding: 0.25rem 0.5rem;
+        border-radius: 4px;
+        color: inherit;
+        text-decoration: none;
+        font-size: 0.9rem;
+      }
+
+      .menubar .menu a:hover {
+        background: #333;
+      }
+
+      /* Active chapter highlighting (Simplemenu adds .active by default) */
+      .menubar .menu li.active a {
+        background: #4caf50;
+        color: #fff;
+      }
+
+      /* Slide number area at bottom of sidebar */
+      .sidebar-footer {
+        margin-top: 0.75rem;
+        font-size: 0.8rem;
+        opacity: 0.9;
+      }
+
+      /* Simplemenu moves Reveal's slide number into this div if it exists */
+      .sidebar-footer .slide-number {
+        display: inline-block;
+        margin-top: 0.25rem;
+      }
+
+      /* Push Reveal stage to the right so it doesn’t sit under the sidebar */
+      .reveal {
+        margin-left: 240px;
+      }
+    </style>
   </head>
 
   <body>
-    <!-- Reveal root -->
     <div class="reveal">
-      <!-- Simplemenu can insert the menubar automatically via the barhtml option,
-           so we do NOT hard-code the menubar here. [web:90] -->
       <div class="slides">
-        <!-- Top-level slides with data-name become menu items -->
-        <section data-name="Introduction">
+        <!-- Top-level sections with data-name become menu items -->
+        <section data-name="Intro">
           <h2>Introduction</h2>
-          <p>Welcome to the demo deck.</p>
+          <p>Welcome to the deck.</p>
         </section>
 
-        <section data-name="Problem Statement">
-          <h2>Problem Statement</h2>
-          <p>Describe the main problem here.</p>
+        <section data-name="Background">
+          <h2>Background</h2>
+          <p>Some context here.</p>
         </section>
 
         <section data-name="Results">
           <h2>Results</h2>
-          <p>Summarize key results.</p>
+          <p>Key findings.</p>
         </section>
 
         <section data-name="Conclusion">
           <h2>Conclusion</h2>
-          <p>Wrap-up and next steps.</p>
+          <p>Wrap-up and outlook.</p>
         </section>
       </div>
     </div>
 
-    <!-- Reveal core from CDN -->
+    <!-- Reveal core -->
     <script src="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.js"></script>
 
-    <!-- Simplemenu plugin script.
-         Option A: commit plugin/simplemenu/simplemenu.js in your repo and reference it.
-         Option B: host simplemenu.js somewhere static and reference that URL here. [web:90] -->
-    <script src="../simplemenu.js"></script>
+    <!-- Shared Simplemenu JS -->
+    <script src="../simplemenu/simplemenu.js"></script>
 
     <script>
       Reveal.initialize({
         hash: true,
         controls: true,
         progress: true,
-        slideNumber: 'c/t',  // current / total [web:5]
+        slideNumber: 'c/t',  // this will be moved into .slide-number by Simplemenu [file:1]
 
         simplemenu: {
-          // Automatically add a menubar with an empty <ul class="menu">,
-          // which Simplemenu will populate from data-name attributes. [web:90]
+          // Inject a custom sidebar markup that Simplemenu will use.
           barhtml: {
-            header: "<div class='menubar'><ul class='menu'></ul><div class='slide-number'></div></div>",
+            header:
+              "<div class='menubar'>" +
+                "<div class='sidebar-header'>" +
+                  "<div class='sidebar-title'>Short Title</div>" +
+                  "<div class='sidebar-author'>V. P. Kurupath</div>" +
+                "</div>" +
+                "<ul class='menu'></ul>" + // Simplemenu auto-fills this from data-name [file:1]
+                "<div class='sidebar-footer'>" +
+                  "<div>Slide:</div>" +
+                  "<div class='slide-number'></div>" + // slide number moved here [file:1]
+                "</div>" +
+              "</div>",
             footer: ""
           },
-          // Keep default behavior: use top-level sections as chapters
-          flat: false,
-          csspath: ""   // or set to your own CSS; empty uses included default [web:90]
+          csspath: "",   // we already loaded simplemenu CSS; keep default behavior [file:1]
+          flat: false
         },
 
         plugins: [ Simplemenu ]
