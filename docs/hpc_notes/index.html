@@ -12,18 +12,19 @@
     <!-- Simplemenu base CSS -->
     <link rel="stylesheet" href="../simplemenu/simplemenu.css">
 
+    <!-- Put your custom CSS AFTER simplemenu.css -->
     <style>
       body {
         margin: 0;
       }
 
-      /* Make the Simplemenu "menubar" a left sidebar */
+      /* Force the Simplemenu bar to be a fixed left sidebar */
       .menubar {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 240px;
-        height: 100vh;
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 240px !important;
+        height: 100vh !important;
         background: #111;
         color: #eee;
         display: flex;
@@ -73,7 +74,7 @@
         background: #333;
       }
 
-      /* Active chapter highlighting (Simplemenu adds .active by default) */
+      /* Active chapter highlighting */
       .menubar .menu li.active a {
         background: #4caf50;
         color: #fff;
@@ -86,7 +87,6 @@
         opacity: 0.9;
       }
 
-      /* Simplemenu moves Reveal's slide number into this div if it exists */
       .sidebar-footer .slide-number {
         display: inline-block;
         margin-top: 0.25rem;
@@ -94,7 +94,8 @@
 
       /* Push Reveal stage to the right so it doesn’t sit under the sidebar */
       .reveal {
-        margin-left: 240px;
+        margin-left: 240px !important;
+        padding: 0 1rem 0 0; /* small right padding */
       }
     </style>
   </head>
@@ -102,7 +103,6 @@
   <body>
     <div class="reveal">
       <div class="slides">
-        <!-- Top-level sections with data-name become menu items -->
         <section data-name="Intro">
           <h2>Introduction</h2>
           <p>Welcome to the deck.</p>
@@ -136,10 +136,9 @@
         hash: true,
         controls: true,
         progress: true,
-        slideNumber: 'c/t',  // this will be moved into .slide-number by Simplemenu [file:1]
+        slideNumber: 'c/t',
 
         simplemenu: {
-          // Inject a custom sidebar markup that Simplemenu will use.
           barhtml: {
             header:
               "<div class='menubar'>" +
@@ -147,15 +146,15 @@
                   "<div class='sidebar-title'>Short Title</div>" +
                   "<div class='sidebar-author'>V. P. Kurupath</div>" +
                 "</div>" +
-                "<ul class='menu'></ul>" + // Simplemenu auto-fills this from data-name [file:1]
+                "<ul class='menu'></ul>" +
                 "<div class='sidebar-footer'>" +
                   "<div>Slide:</div>" +
-                  "<div class='slide-number'></div>" + // slide number moved here [file:1]
+                  "<div class='slide-number'></div>" +
                 "</div>" +
               "</div>",
             footer: ""
           },
-          csspath: "",   // we already loaded simplemenu CSS; keep default behavior [file:1]
+          csspath: "",  // we already loaded the CSS
           flat: false
         },
 
