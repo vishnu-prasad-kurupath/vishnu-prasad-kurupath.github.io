@@ -2,111 +2,41 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Reveal with Sidebar Menu</title>
+    <title>Reveal + Simplemenu (CDN Reveal)</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-    <!-- Core reveal.js styles from CDN -->
+    <!-- Reveal core styles from CDN -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.css">
-    <!-- Theme (you can change black.css → white.css, league.css, etc.) -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/theme/black.css" id="theme">
 
-    <style>
-      body {
-        margin: 0;
-      }
-
-      /* Sidebar layout */
-      #sidebar {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 220px;
-        height: 100vh;
-        background: #111;
-        color: #eee;
-        padding: 1rem 0.5rem;
-        box-sizing: border-box;
-        font-family: system-ui, sans-serif;
-        font-size: 0.9rem;
-        overflow-y: auto;
-        z-index: 20;
-      }
-
-      #sidebar h1 {
-        font-size: 1rem;
-        margin: 0 0 0.75rem 0.5rem;
-      }
-
-      #sidebar ul {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-      }
-
-      #sidebar li {
-        margin: 0.25rem 0;
-      }
-
-      #sidebar button {
-        width: 100%;
-        text-align: left;
-        border: none;
-        background: transparent;
-        color: inherit;
-        padding: 0.25rem 0.5rem;
-        cursor: pointer;
-        border-radius: 4px;
-        font: inherit;
-      }
-
-      #sidebar button:hover {
-        background: #333;
-      }
-
-      #sidebar button.active {
-        background: #4caf50;
-        color: #fff;
-      }
-
-      /* Shift Reveal to the right to make room for sidebar */
-      .reveal {
-        margin-left: 220px;
-      }
-    </style>
+    <!-- Simplemenu CSS (either from plugin or your own copy) -->
+    <link rel="stylesheet" href="../simplemenu.css">
+    <!-- If you don't want to copy CSS, you can instead style the menu yourself and set csspath: false in options. [web:90] -->
   </head>
 
   <body>
-    <!-- Sidebar menu -->
-    <nav id="sidebar">
-      <h1>Contents</h1>
-      <ul id="sidebar-list">
-        <!-- Filled by JS based on slide headings -->
-      </ul>
-    </nav>
-
     <!-- Reveal root -->
     <div class="reveal">
+      <!-- Simplemenu can insert the menubar automatically via the barhtml option,
+           so we do NOT hard-code the menubar here. [web:90] -->
       <div class="slides">
-        <!-- Slide 1 -->
-        <section data-title="Introduction">
+        <!-- Top-level slides with data-name become menu items -->
+        <section data-name="Introduction">
           <h2>Introduction</h2>
           <p>Welcome to the demo deck.</p>
         </section>
 
-        <!-- Slide 2 -->
-        <section data-title="Problem Statement">
+        <section data-name="Problem Statement">
           <h2>Problem Statement</h2>
           <p>Describe the main problem here.</p>
         </section>
 
-        <!-- Slide 3 -->
-        <section data-title="Results">
+        <section data-name="Results">
           <h2>Results</h2>
           <p>Summarize key results.</p>
         </section>
 
-        <!-- Slide 4 -->
-        <section data-title="Conclusion">
+        <section data-name="Conclusion">
           <h2>Conclusion</h2>
           <p>Wrap-up and next steps.</p>
         </section>
@@ -115,59 +45,33 @@
 
     <!-- Reveal core from CDN -->
     <script src="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.js"></script>
+
+    <!-- Simplemenu plugin script.
+         Option A: commit plugin/simplemenu/simplemenu.js in your repo and reference it.
+         Option B: host simplemenu.js somewhere static and reference that URL here. [web:90] -->
+    <script src="../simplemenu.js"></script>
+
     <script>
-      // Initialize Reveal with slide numbers + progress bar
       Reveal.initialize({
         hash: true,
         controls: true,
         progress: true,
-        slideNumber: 'c/t'   // current/total; can be changed to true, 'h/v', etc. [web:5]
+        slideNumber: 'c/t',  // current / total [web:5]
+
+        simplemenu: {
+          // Automatically add a menubar with an empty <ul class="menu">,
+          // which Simplemenu will populate from data-name attributes. [web:90]
+          barhtml: {
+            header: "<div class='menubar'><ul class='menu'></ul><div class='slide-number'></div></div>",
+            footer: ""
+          },
+          // Keep default behavior: use top-level sections as chapters
+          flat: false,
+          csspath: ""   // or set to your own CSS; empty uses included default [web:90]
+        },
+
+        plugins: [ Simplemenu ]
       });
-
-      // Build sidebar menu from top-level horizontal slides
-      function buildSidebar() {
-        const list = document.getElementById('sidebar-list');
-        list.innerHTML = '';
-
-        const horizontalSlides = document.querySelectorAll('.reveal .slides > section');
-        horizontalSlides.forEach((slide, index) => {
-          // Prefer data-title, fall back to heading text
-          let title = slide.getAttribute('data-title');
-          if (!title) {
-            const h = slide.querySelector('h1, h2, h3, h4, h5, h6');
-            title = h ? h.textContent.trim() : `Slide ${index + 1}`;
-          }
-
-          const li = document.createElement('li');
-          const btn = document.createElement('button');
-          btn.textContent = title;
-
-          // Navigate to slide when clicked (horizontal index; vertical = 0)
-          btn.addEventListener('click', () => {
-            Reveal.slide(index, 0);
-          });
-
-          li.appendChild(btn);
-          list.appendChild(li);
-        });
-
-        // Highlight current slide
-        updateSidebarActive();
-      }
-
-      function updateSidebarActive() {
-        const state = Reveal.getState();
-        const hIndex = state.indexh || 0;
-        const buttons = document.querySelectorAll('#sidebar button');
-        buttons.forEach((btn, i) => {
-          btn.classList.toggle('active', i === hIndex);
-        });
-      }
-
-      // Build menu when Reveal is ready
-      Reveal.on('ready', buildSidebar);
-      // Update highlight on every slide change
-      Reveal.on('slidechanged', updateSidebarActive);
     </script>
   </body>
 </html>
