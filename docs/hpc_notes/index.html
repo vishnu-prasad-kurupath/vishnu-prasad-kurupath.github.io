@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>My First Reveal Slide (CDN)</title>
+
+    <!-- Core reveal.js styles from CDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.css">
+    <!-- Theme (pick any theme from the same path, e.g. black.css, white.css, league.css) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/theme/black.css" id="theme">
+
+    <style>
+      body { margin: 0; }
+    </style>
+  </head>
+
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <!-- Single slide -->
+        <section>
+          <h2>Hello, Reveal.js</h2>
+          <p>This is a single test slide using the CDN build.</p>
+        </section>
+      </div>
+    </div>
+
+    <!-- Core reveal.js script from CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.js"></script>
+    <script>
+      Reveal.initialize({
+        hash: true,
+        controls: true,
+        progress: true,
+        slideNumber: 'c/t'
+      });
+    </script>
+  </body>
+</html>
