@@ -2,140 +2,38 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Deck with Sidebar Menu</title>
+    <title>Reveal SlideNumber Test</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-    <!-- Reveal core from CDN -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/theme/black.css" id="theme">
 
-    <!-- Simplemenu base CSS -->
-    <!-- <link rel="stylesheet" href="../simplemenu/simplemenu.css"> -->
-
-    <!-- Put your custom CSS AFTER simplemenu.css -->
     <style>
-      body {
-        margin: 0;
-      }
-
-      /* Force the Simplemenu bar to be a fixed left sidebar */
-      .menubar {
-        position: fixed !important;
-        top: 0 !important;
-        left: 0 !important;
-        width: 240px !important;
-        height: 100vh !important;
-        background: #111;
-        color: #eee;
-        display: flex;
-        flex-direction: column;
-        box-sizing: border-box;
-        padding: 1rem 0.75rem;
-        z-index: 20;
-      }
-
-      .sidebar-header {
-        margin-bottom: 1rem;
-      }
-
-      .sidebar-title {
-        font-size: 1rem;
-        font-weight: 700;
-      }
-
-      .sidebar-author {
-        font-size: 0.8rem;
-        opacity: 0.8;
-      }
-
-      .menubar .menu {
-        flex: 1 1 auto;
-        overflow-y: auto;
-      }
-
-      /* Slide number area at bottom of sidebar */
-      .sidebar-footer {
-        margin-top: 0.75rem;
-        font-size: 0.8rem;
-        opacity: 0.9;
-      }
-
-      .sidebar-footer .slide-number {
-        display: inline-block;
-        margin-top: 0.25rem;
-        font-weight: 700;
-        color: #fff;         /* ensure visible on dark background */
-        border: 1px solid red;
-        min-width: 3em;
-      }
-
-      /* Push Reveal stage to the right so it doesn’t sit under the sidebar */
-      .reveal {
-        margin-left: 240px !important;
-        padding: 0 1rem 0 0; /* small right padding */
-      }
+      body { margin: 0; }
     </style>
   </head>
 
   <body>
     <div class="reveal">
       <div class="slides">
-        <section data-name="Intro">
-          <h2>Introduction</h2>
-          <p>Welcome to the deck.</p>
+        <section>
+          <h2>Slide 1</h2>
+          <p>First slide.</p>
         </section>
-
-        <section data-name="Background">
-          <h2>Background</h2>
-          <p>Some context here.</p>
-        </section>
-
-        <section data-name="Results">
-          <h2>Results</h2>
-          <p>Key findings.</p>
-        </section>
-
-        <section data-name="Conclusion">
-          <h2>Conclusion</h2>
-          <p>Wrap-up and outlook.</p>
+        <section>
+          <h2>Slide 2</h2>
+          <p>Second slide.</p>
         </section>
       </div>
     </div>
 
-    <!-- Reveal core -->
     <script src="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.js"></script>
-
-    <!-- Shared Simplemenu JS -->
-    <!-- <script src="../simplemenu/simplemenu.js"></script> -->
-
     <script>
       Reveal.initialize({
         hash: true,
         controls: true,
         progress: true,
-        slideNumber: 'c/t',
-
-        // simplemenu: {
-          // barhtml: {
-            // header:
-              // "<div class='menubar'>" +
-                // "<div class='sidebar-header'>" +
-                  // "<div class='sidebar-title'>Short Title</div>" +
-                  // "<div class='sidebar-author'>V. P. Kurupath</div>" +
-                // "</div>" +
-                // "<ul class='menu'></ul>" +
-                // "<div class='sidebar-footer'>" +
-                  // "<div>Slide:</div>" +
-                  // "<div class='slide-number'></div>" +
-                // "</div>" +
-              // "</div>",
-            // footer: ""
-          // },
-          // csspath: "",  // we already loaded the CSS
-          // flat: false
-        // },
-// 
-        // plugins: [ Simplemenu ]
+        slideNumber: 'c/t'
       });
     </script>
   </body>
