@@ -10,34 +10,29 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/theme/black.css" id="theme">
 
     <!-- Simplemenu CSS (default styling) -->
-    <link rel="stylesheet" href="plugin/simplemenu/simplemenu.css">
+    <link rel="stylesheet" href="../simplemenu/simplemenu.css">
 
     <style>
       body {
         margin: 0;
       }
-
-      /* Simple footer for author + title, below slides */
+      
       .footer-bar {
         position: fixed;
         left: 0;
-        bottom: 0;
+        bottom: 0.2rem;              /* a bit above the very bottom */
         width: 100%;
-        padding: 0.3rem 1rem;
         box-sizing: border-box;
         font-family: system-ui, sans-serif;
         font-size: 0.8rem;
         color: #ccc;
-        background: rgba(0, 0, 0, 0.5);
-        display: flex;
-        justify-content: space-between;
-        pointer-events: none;   /* so clicks still go to Reveal controls */
+        text-align: center;
+        pointer-events: none;        /* ensure Reveal controls and slide number remain clickable */
         z-index: 30;
       }
 
-      .footer-left,
-      .footer-right {
-        pointer-events: auto;   /* enable interactions if needed */
+      .footer-bar span {
+        pointer-events: auto;
       }
     </style>
   </head>
@@ -71,15 +66,14 @@
 
     <!-- Author/title footer bar (independent of Simplemenu) -->
     <div class="footer-bar">
-      <div class="footer-left">V. P. Kurupath</div>
-      <div class="footer-right">Short Talk Title</div>
+      <span>Vishnu Kurupath — HPC Notes</span>
     </div>
 
     <!-- Reveal core -->
     <script src="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.js"></script>
 
     <!-- Simplemenu plugin -->
-    <script src="plugin/simplemenu/simplemenu.js"></script>
+    <script src="../simplemenu/simplemenu.js"></script>
 
     <script>
       Reveal.initialize({
