@@ -43,7 +43,6 @@ HPC Notes — Conference / Date
 
 ## Results vs Methods
 
-
 <div class="two-columns">
 <div class="col">
 
@@ -54,6 +53,14 @@ HPC Notes — Conference / Date
 
 </div>
 <div class="col">
+
+### Results
+
+- R1
+- R2
+
+</div>
+</div>
 
 ---
 
