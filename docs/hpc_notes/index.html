@@ -111,17 +111,6 @@
         top: auto;
         right: auto;
       }
-
-      .two-columns {
-        display: flex;
-        gap: 2rem;
-        justify-content: center;
-        align-items: flex-start;
-        margin-top: 1.5rem;
-      }
-      .two-columns .col {
-        flex: 1 1 0;
-      }
     </style>
   </head>
 
@@ -130,8 +119,8 @@
       <div class="slides">
         <section
           data-markdown="slides.md"
-          data-separator="^\n---\n$"
-          data-separator-vertical="^\n--\n$"
+          data-separator="^\\n---\\n$"
+          data-separator-vertical="^\\n--\\n$"
           data-charset="utf-8">
         </section>
       </div>
@@ -174,70 +163,43 @@
       const currentSectionLabel = document.getElementById('current-section-label');
       const footerSlideNumber = document.getElementById('footer-slide-number');
 
-      // Extract section name and clean title from heading text "[Section] Title"
-      function parseSectionFromHeading(headingEl, index) {
-        if (!headingEl) {
-          return {
-            section: `Slide ${index + 1}`,
-            title: `Slide ${index + 1}`
-          };
-        }
-        const raw = headingEl.textContent.trim();
-        const match = raw.match(/^\[(.+?)\]\s*(.*)$/);
-        if (match) {
-          const section = match[1].trim();             // inside brackets
-          const title = (match[2] || section).trim();  // rest of heading or section name
-          return { section, title };
-        } else {
-          return {
-            section: raw,
-            title: raw
-          };
-        }
+      // Get all top-level horizontal sections
+      function getHorizontalSectionsRoot() {
+        return document.querySelector('.reveal .slides');
       }
 
-      // Clean headings in-place so "[Section] Title" shows only "Title" on slides
-      function cleanHeadings(slides) {
-        slides.forEach((slide, index) => {
-          const h = slide.querySelector('h1, h2, h3, h4, h5, h6');
-          if (!h) return;
-          const info = parseSectionFromHeading(h, index);
-          h.textContent = info.title;
-        });
+      function getHorizontalSections() {
+        const root = getHorizontalSectionsRoot();
+        if (!root) return [];
+        return Array.from(root.children).filter(s => s.tagName.toLowerCase() === 'section');
       }
 
-      // Build one menu entry per section (first slide in each section)
+      function getTitleFromSection(sectionEl, fallbackIndex) {
+        // Try a heading in the first vertical child if present, else in the section itself
+        let container = sectionEl;
+        const firstChild = sectionEl.querySelector('section');
+        if (firstChild) {
+          container = firstChild;
+        }
+        const h = container.querySelector('h1, h2, h3, h4, h5, h6');
+        if (!h) return 'Slide ' + (fallbackIndex + 1);
+        return h.textContent.trim();
+      }
+
       function buildSectionMenu() {
         sectionMenu.innerHTML = '';
+        const horizSections = getHorizontalSections();
 
-        const slides = Array.from(document.querySelectorAll('.reveal .slides > section'));
-        cleanHeadings(slides);
+        horizSections.forEach((sec, hIndex) => {
+          const title = getTitleFromSection(sec, hIndex);
+          sec.dataset.sectionName = title;
 
-        const sections = [];
-        const seen = new Set();
-
-        slides.forEach((slide, index) => {
-          const h = slide.querySelector('h1, h2, h3, h4, h5, h6');
-          const info = parseSectionFromHeading(h || { textContent: slide.dataset.originalHeading || '' }, index);
-          const key = info.section;
-
-          if (!seen.has(key)) {
-            seen.add(key);
-            sections.push({
-              section: info.section,
-              firstIndex: index
-            });
-          }
-
-          slide.dataset.sectionName = info.section;
-        });
-
-        sections.forEach((entry) => {
           const li = document.createElement('li');
           const btn = document.createElement('button');
-          btn.textContent = entry.section;
+          btn.textContent = title;
           btn.addEventListener('click', () => {
-            Reveal.slide(entry.firstIndex, 0);
+            // Jump to first vertical slide of this horizontal section
+            Reveal.slide(hIndex, 0);
             sectionMenu.style.display = 'none';
           });
           li.appendChild(btn);
@@ -248,12 +210,15 @@
       }
 
       function updateFooterState() {
-        const state = Reveal.getState();
-        const hIndex = state.indexh || 0;
-        const slides = document.querySelectorAll('.reveal .slides > section');
-        const currentSlide = slides[hIndex];
+        const indices = Reveal.getIndices();
+        const h = indices.h || 0;
 
-        const sectionName = currentSlide ? (currentSlide.dataset.sectionName || '') : '';
+        const horizSections = getHorizontalSections();
+        const currentSection = horizSections[h];
+
+        const sectionName = currentSection
+          ? (currentSection.dataset.sectionName || getTitleFromSection(currentSection, h))
+          : '';
 
         if (sectionName) {
           currentSectionLabel.textContent = sectionName;
@@ -264,8 +229,9 @@
           btn.classList.toggle('active', btn.textContent === sectionName);
         });
 
-        const total = slides.length;
-        const current = hIndex + 1;
+        // Compute flat slide number (Reveal's built-in count)
+        const total = Reveal.getTotalSlides();
+        const current = Reveal.getSlidePastCount() + 1;
         footerSlideNumber.textContent = current + '/' + total;
       }
 
