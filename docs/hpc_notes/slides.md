@@ -10,7 +10,6 @@ HPC Notes — Conference / Date
 - Motivation for HPC
 - Example use cases (MD, CFD, ML)
 - What this talk will cover
-- Test
 
 --
 
@@ -49,7 +48,7 @@ HPC Notes — Conference / Date
 
 --
 
-[Step] Stepwise list
+## Stepwise list
 
 - First point <!-- .element: class="fragment" data-fragment-index="1" -->
 - Second point <!-- .element: class="fragment" data-fragment-index="2" -->
