@@ -48,7 +48,25 @@
         opacity: 0.9;
         white-space: nowrap;
       }
-      
+      /* Pulse animation */
+      @keyframes verticalHintPulse {
+        0%   { transform: translateY(0);     opacity: 0.4; }
+        25%  { transform: translateY(-2px);  opacity: 1;   }
+        50%  { transform: translateY(0);     opacity: 0.9; }
+        75%  { transform: translateY(2px);   opacity: 1;   }
+        100% { transform: translateY(0);     opacity: 0.9; }
+      }
+      /* Class to trigger the pulse */
+      .footer-vertical-hint.pulse {
+        animation: verticalHintPulse 1.4s ease-in-out 1;
+      }
+      /* Respect reduced motion */
+      @media (prefers-reduced-motion: reduce) {
+        .footer-vertical-hint.pulse {
+          animation: none;
+        }
+      }
+
       .footer-name-title { white-space: nowrap; }
 
       .footer-section { position: relative; }
@@ -269,8 +287,8 @@
           }
         }
       
-        footerSlideNumber.textContent = `${current}/${total} · ${verticalCurrent}/${verticalTotal}`;
-            
+        footerSlideNumber.textContent = `${current}/${total} (${verticalCurrent}/${verticalTotal})`;
+
         if (verticalTotal > 1) {
           footerVerticalHint.textContent = `↑↓ ${verticalCurrent}/${verticalTotal}`;
         } else {
