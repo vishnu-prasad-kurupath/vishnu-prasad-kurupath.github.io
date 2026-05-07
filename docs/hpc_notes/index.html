@@ -174,25 +174,70 @@
       const currentSectionLabel = document.getElementById('current-section-label');
       const footerSlideNumber = document.getElementById('footer-slide-number');
 
-      function getTitleFromSlide(slide, index) {
-        const h = slide.querySelector('h1, h2, h3, h4, h5, h6');
-        if (!h) return `Slide ${index + 1}`;
-        return h.textContent.trim();
+      // Extract section name and clean title from heading text "[Section] Title"
+      function parseSectionFromHeading(headingEl, index) {
+        if (!headingEl) {
+          return {
+            section: `Slide ${index + 1}`,
+            title: `Slide ${index + 1}`
+          };
+        }
+        const raw = headingEl.textContent.trim();
+        const match = raw.match(/^\[(.+?)\]\s*(.*)$/);
+        if (match) {
+          const section = match[1].trim();             // inside brackets
+          const title = (match[2] || section).trim();  // rest of heading or section name
+          return { section, title };
+        } else {
+          return {
+            section: raw,
+            title: raw
+          };
+        }
       }
 
+      // Clean headings in-place so "[Section] Title" shows only "Title" on slides
+      function cleanHeadings(slides) {
+        slides.forEach((slide, index) => {
+          const h = slide.querySelector('h1, h2, h3, h4, h5, h6');
+          if (!h) return;
+          const info = parseSectionFromHeading(h, index);
+          h.textContent = info.title;
+        });
+      }
+
+      // Build one menu entry per section (first slide in each section)
       function buildSectionMenu() {
         sectionMenu.innerHTML = '';
+
         const slides = Array.from(document.querySelectorAll('.reveal .slides > section'));
+        cleanHeadings(slides);
+
+        const sections = [];
+        const seen = new Set();
 
         slides.forEach((slide, index) => {
-          const title = getTitleFromSlide(slide, index);
-          slide.dataset.sectionName = title;
+          const h = slide.querySelector('h1, h2, h3, h4, h5, h6');
+          const info = parseSectionFromHeading(h || { textContent: slide.dataset.originalHeading || '' }, index);
+          const key = info.section;
 
+          if (!seen.has(key)) {
+            seen.add(key);
+            sections.push({
+              section: info.section,
+              firstIndex: index
+            });
+          }
+
+          slide.dataset.sectionName = info.section;
+        });
+
+        sections.forEach((entry) => {
           const li = document.createElement('li');
           const btn = document.createElement('button');
-          btn.textContent = title;
+          btn.textContent = entry.section;
           btn.addEventListener('click', () => {
-            Reveal.slide(index, 0);
+            Reveal.slide(entry.firstIndex, 0);
             sectionMenu.style.display = 'none';
           });
           li.appendChild(btn);
@@ -208,7 +253,8 @@
         const slides = document.querySelectorAll('.reveal .slides > section');
         const currentSlide = slides[hIndex];
 
-        const sectionName = currentSlide ? (currentSlide.dataset.sectionName || getTitleFromSlide(currentSlide, hIndex)) : '';
+        const sectionName = currentSlide ? (currentSlide.dataset.sectionName || '') : '';
+
         if (sectionName) {
           currentSectionLabel.textContent = sectionName;
         }
