@@ -57,13 +57,20 @@
   <body>
     <!-- Reveal root (Simplemenu will create its own menubar) -->
     <div class="reveal">
-      <div class="slides">
+      <!-- <div class="slides">
         <section data-markdown="./slides.md"
                  data-separator="^\n---\n$"
                  data-separator-vertical="^\n--\n$"
                  data-charset="utf-8">
         </section>
-      </div>
+      </div> -->
+
+      <div class="slides">
+  <section data-name="Intro">
+    <h2>Intro</h2>
+    <p>Test slide.</p>
+  </section>
+</div>
     </div>
 
     <!-- Author/title footer bar (independent of Simplemenu) -->
@@ -78,7 +85,7 @@
     <script src="../simplemenu/simplemenu.js"></script>
 
     <!-- Markdown -->
-    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5/plugin/markdown/markdown.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/reveal.js@5/plugin/markdown/markdown.js"></script> -->
 
 
     <script>
@@ -104,7 +111,7 @@
           csspath: ""   // use plugin's own CSS [file:1]
         },
 
-        plugins: [ Simplemenu, RevealMarkdown ]
+        plugins: [ Simplemenu]
       });
     </script>
   </body>
