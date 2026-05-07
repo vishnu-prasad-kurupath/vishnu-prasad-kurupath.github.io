@@ -31,7 +31,6 @@ HPC Notes — Conference / Date
 - Time integration
 - Parallelization strategies
 
-
 --
 
 ## Stepwise list
