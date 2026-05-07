@@ -9,102 +9,229 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/theme/black.css" id="theme">
 
-    <!-- Simplemenu CSS (default styling) -->
-    <link rel="stylesheet" href="../simplemenu/simplemenu.css">
-
     <style>
       body {
         margin: 0;
       }
-      
+
+      /* Footer bar with name, title, and section dropdown */
       .footer-bar {
         position: fixed;
         left: 0;
-        bottom: 0.2rem;              /* a bit above the very bottom */
+        bottom: 0;
         width: 100%;
         box-sizing: border-box;
         font-family: system-ui, sans-serif;
         font-size: 0.8rem;
         color: #ccc;
-        text-align: center;
-        pointer-events: none;        /* ensure Reveal controls and slide number remain clickable */
+        background: rgba(0, 0, 0, 0.4);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 1rem;
+        padding: 0.25rem 0.75rem;
         z-index: 30;
       }
 
-      .footer-bar span {
-        pointer-events: auto;
+      .footer-name-title {
+        white-space: nowrap;
       }
 
-      .menubar .menu li a {
-        font-size: 1.0rem;     /* try 0.8rem, 0.75rem, etc. */
-        padding: 0.15rem 0.5rem; /* slightly tighter vertical padding */
+      .footer-section {
+        position: relative;
       }
 
-      .two-columns {
-        display: flex;
-        gap: 2rem;
-        justify-content: center;
-        align-items: flex-start;
-        margin-top: 1.5rem;
-      }
-      .two-columns .col {
-        flex: 1 1 0;
+      .footer-section-button {
+        border: 1px solid #666;
+        border-radius: 4px;
+        background: rgba(0, 0, 0, 0.6);
+        color: #eee;
+        padding: 0.15rem 0.5rem;
+        cursor: pointer;
+        font: inherit;
       }
 
+      .footer-section-button span.section-label {
+        font-weight: 600;
+      }
+
+      .footer-section-button span.caret {
+        margin-left: 0.25rem;
+        opacity: 0.8;
+      }
+
+      /* Drop-up menu */
+      .section-menu {
+        position: absolute;
+        left: 0;
+        bottom: 100%;
+        margin-bottom: 0.3rem;
+        min-width: 10rem;
+        max-height: 50vh;
+        overflow-y: auto;
+        background: #111;
+        border: 1px solid #555;
+        border-radius: 4px;
+        box-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
+        padding: 0.25rem 0;
+        list-style: none;
+        display: none; /* toggled via JS */
+        z-index: 40;
+      }
+
+      .section-menu li {
+        margin: 0;
+      }
+
+      .section-menu button {
+        width: 100%;
+        border: none;
+        background: transparent;
+        color: #ccc;
+        text-align: left;
+        padding: 0.2rem 0.5rem;
+        font: inherit;
+        cursor: pointer;
+      }
+
+      .section-menu button:hover {
+        background: #333;
+        color: #fff;
+      }
+
+      .section-menu button.active {
+        background: #444;
+        color: #fff;
+        font-weight: 600;
+      }
+
+      /* Move Reveal arrows to bottom-left */
+      .reveal .controls {
+        bottom: 0.5rem;
+        left: 0.5rem;
+        top: auto;
+        right: auto;
+      }
     </style>
   </head>
 
   <body>
-    <!-- Reveal root (Simplemenu will create its own menubar) -->
     <div class="reveal">
       <div class="slides">
-        <section data-markdown="./slides.md"
-                 data-separator="^\n---\n$"
-                 data-separator-vertical="^\n--\n$"
-                 data-charset="utf-8">
+        <!-- External Markdown -->
+        <section
+          data-markdown="slides.md"
+          data-separator="^\n---\n$"
+          data-separator-vertical="^\n--\n$"
+          data-charset="utf-8">
         </section>
       </div>
     </div>
 
-    <!-- Author/title footer bar (independent of Simplemenu) -->
+    <!-- Footer with name, title, and section selector -->
     <div class="footer-bar">
-      <span>(c) Vishnu Kurupath — HPC Notes</span>
+      <div class="footer-name-title">
+        (c) Vishnu Kurupath — HPC Notes
+      </div>
+      <div class="footer-section">
+        <button class="footer-section-button" id="section-toggle">
+          <span class="section-label" id="current-section-label">Section</span>
+          <span class="caret">▲</span>
+        </button>
+        <ul class="section-menu" id="section-menu">
+          <!-- Filled by JS -->
+        </ul>
+      </div>
     </div>
 
     <!-- Reveal core -->
     <script src="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.js"></script>
-
-    <!-- Simplemenu plugin -->
-    <script src="../simplemenu/simplemenu.js"></script>
-
-    <!-- Markdown -->
+    <!-- Markdown plugin -->
     <script src="https://cdn.jsdelivr.net/npm/reveal.js@5/plugin/markdown/markdown.js"></script>
-
 
     <script>
       Reveal.initialize({
         hash: true,
         controls: true,
         progress: true,
-        slideNumber: 'c/t',   // default bottom-right slide number [web:1][web:5]
+        slideNumber: 'c/t',
+        plugins: [ RevealMarkdown ]
+      });
 
-        simplemenu: {
-          // Use Simplemenu exactly as documented: auto-generate menu from data-name [file:1]
-          barhtml: {
-            header: "<div class='menubar'><ul class='menu'></ul></div>",
-            footer: ""
-          },
-          // Leave other options at their defaults
-          // menuclass: "menu",
-          // activeclass: "active",
-          // activeelement: "li",
-          // selectby: "id",
-          flat: false,
-          // scale: 0.67,
-          csspath: ""   // use plugin's own CSS [file:1]
-        },
+      const sectionMenu = document.getElementById('section-menu');
+      const sectionToggle = document.getElementById('section-toggle');
+      const currentSectionLabel = document.getElementById('current-section-label');
 
-        plugins: [ Simplemenu, RevealMarkdown ]
+      // Build menu from top-level sections after Markdown is rendered
+      function buildSectionMenu() {
+        sectionMenu.innerHTML = '';
+        const slides = document.querySelectorAll('.reveal .slides > section');
+
+        slides.forEach((slide, index) => {
+          // Get title from data-title if present, else first heading
+          let title = slide.getAttribute('data-title');
+          if (!title) {
+            const h = slide.querySelector('h1, h2, h3, h4, h5, h6');
+            title = h ? h.textContent.trim() : `Slide ${index + 1}`;
+          }
+
+          const li = document.createElement('li');
+          const btn = document.createElement('button');
+          btn.textContent = title;
+
+          btn.addEventListener('click', () => {
+            Reveal.slide(index, 0);
+            sectionMenu.style.display = 'none';
+          });
+
+          li.appendChild(btn);
+          sectionMenu.appendChild(li);
+        });
+
+        updateActiveSection();
+      }
+
+      // Update which item is active and current label
+      function updateActiveSection() {
+        const state = Reveal.getState();
+        const hIndex = state.indexh || 0;
+        const slides = document.querySelectorAll('.reveal .slides > section');
+        const buttons = sectionMenu.querySelectorAll('button');
+
+        buttons.forEach((btn, i) => {
+          btn.classList.toggle('active', i === hIndex);
+        });
+
+        const currentSlide = slides[hIndex];
+        let title = currentSlide && currentSlide.getAttribute('data-title');
+        if (!title && currentSlide) {
+          const h = currentSlide.querySelector('h1, h2, h3, h4, h5, h6');
+          title = h ? h.textContent.trim() : `Slide ${hIndex + 1}`;
+        }
+        if (title) {
+          currentSectionLabel.textContent = title;
+        }
+      }
+
+      // Toggle menu visibility
+      sectionToggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isVisible = sectionMenu.style.display === 'block';
+        sectionMenu.style.display = isVisible ? 'none' : 'block';
+      });
+
+      // Hide menu when clicking outside
+      document.addEventListener('click', () => {
+        sectionMenu.style.display = 'none';
+      });
+
+      // Initialize after Reveal + Markdown are ready
+      Reveal.on('ready', () => {
+        buildSectionMenu();
+      });
+
+      Reveal.on('slidechanged', () => {
+        updateActiveSection();
       });
     </script>
   </body>
