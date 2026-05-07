@@ -9,29 +9,35 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/theme/black.css" id="theme">
 
-    <!-- Simplemenu CSS -->
+    <!-- Simplemenu CSS (default styling) -->
     <link rel="stylesheet" href="../simplemenu/simplemenu.css">
 
     <style>
       body {
         margin: 0;
       }
-
+      
       .footer-bar {
         position: fixed;
         left: 0;
-        bottom: 0.2rem;
+        bottom: 0.2rem;              /* a bit above the very bottom */
         width: 100%;
         box-sizing: border-box;
         font-family: system-ui, sans-serif;
         font-size: 0.8rem;
         color: #ccc;
         text-align: center;
-        pointer-events: none;
+        pointer-events: none;        /* ensure Reveal controls and slide number remain clickable */
         z-index: 30;
       }
+
       .footer-bar span {
         pointer-events: auto;
+      }
+
+      .menubar .menu li a {
+        font-size: 1.0rem;     /* try 0.8rem, 0.75rem, etc. */
+        padding: 0.15rem 0.5rem; /* slightly tighter vertical padding */
       }
 
       .two-columns {
@@ -45,28 +51,22 @@
         flex: 1 1 0;
       }
 
-      /* Optional: smaller Simplemenu font */
-      .menubar .menu li a {
-        font-size: 1.0rem;
-        padding: 0.15rem 0.5rem;
-      }
     </style>
   </head>
 
   <body>
+    <!-- Reveal root (Simplemenu will create its own menubar) -->
     <div class="reveal">
       <div class="slides">
-        <!-- External Markdown -->
-        <section
-          data-markdown="slides.md"
-          data-separator="^\n---\n$"
-          data-separator-vertical="^\n--\n$"
-          data-charset="utf-8">
+        <section data-markdown="./slides.md"
+                 data-separator="^\n---\n$"
+                 data-separator-vertical="^\n--\n$"
+                 data-charset="utf-8">
         </section>
       </div>
     </div>
 
-    <!-- Footer -->
+    <!-- Author/title footer bar (independent of Simplemenu) -->
     <div class="footer-bar">
       <span>(c) Vishnu Kurupath — HPC Notes</span>
     </div>
@@ -77,19 +77,31 @@
     <!-- Simplemenu plugin -->
     <script src="../simplemenu/simplemenu.js"></script>
 
-    <!-- Markdown plugin -->
+    <!-- Markdown -->
     <script src="https://cdn.jsdelivr.net/npm/reveal.js@5/plugin/markdown/markdown.js"></script>
+
 
     <script>
       Reveal.initialize({
         hash: true,
         controls: true,
         progress: true,
-        slideNumber: 'c/t',
+        slideNumber: 'c/t',   // default bottom-right slide number [web:1][web:5]
 
         simplemenu: {
-          csspath: "",
-          flat: false
+          // Use Simplemenu exactly as documented: auto-generate menu from data-name [file:1]
+          barhtml: {
+            header: "<div class='menubar'><ul class='menu'></ul></div>",
+            footer: ""
+          },
+          // Leave other options at their defaults
+          // menuclass: "menu",
+          // activeclass: "active",
+          // activeelement: "li",
+          // selectby: "id",
+          // flat: false,
+          // scale: 0.67,
+          csspath: ""   // use plugin's own CSS [file:1]
         },
 
         plugins: [ Simplemenu, RevealMarkdown ]
