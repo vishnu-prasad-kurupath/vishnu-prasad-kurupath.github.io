@@ -3,18 +3,22 @@
   <head>
     <meta charset="utf-8">
     <title>HPC Notes</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
     <!-- Reveal core from CDN -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/theme/black.css" id="theme">
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/reveal.css">
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/reveal.js@5/dist/theme/black.css"
+          id="theme">
 
     <style>
       body {
         margin: 0;
       }
 
-      /* Footer bar with name, title, and section dropdown */
+      /* Footer bar: left name/title, center section selector, right slide number */
       .footer-bar {
         position: fixed;
         left: 0;
@@ -26,17 +30,36 @@
         color: #ccc;
         background: rgba(0, 0, 0, 0.4);
         display: flex;
-        justify-content: center;
         align-items: center;
-        gap: 1rem;
         padding: 0.25rem 0.75rem;
         z-index: 30;
+      }
+
+      .footer-left,
+      .footer-center,
+      .footer-right {
+        flex: 1 1 0;
+        display: flex;
+        align-items: center;
+      }
+
+      .footer-left {
+        justify-content: flex-start;
+      }
+
+      .footer-center {
+        justify-content: center;
+      }
+
+      .footer-right {
+        justify-content: flex-end;
       }
 
       .footer-name-title {
         white-space: nowrap;
       }
 
+      /* Section selector in the center */
       .footer-section {
         position: relative;
       }
@@ -60,7 +83,7 @@
         opacity: 0.8;
       }
 
-      /* Drop-up menu */
+      /* Drop-up section menu */
       .section-menu {
         position: absolute;
         left: 0;
@@ -75,7 +98,7 @@
         box-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
         padding: 0.25rem 0;
         list-style: none;
-        display: none; /* toggled via JS */
+        display: none;
         z-index: 40;
       }
 
@@ -105,6 +128,12 @@
         font-weight: 600;
       }
 
+      /* Slide number on the right side of footer */
+      .footer-slide-number {
+        font-weight: 700;
+        color: #fff;
+      }
+
       /* Move Reveal arrows to bottom-left */
       .reveal .controls {
         bottom: 0.5rem;
@@ -128,19 +157,26 @@
       </div>
     </div>
 
-    <!-- Footer with name, title, and section selector -->
+    <!-- Footer -->
     <div class="footer-bar">
-      <div class="footer-name-title">
-        (c) Vishnu Kurupath — HPC Notes
+      <div class="footer-left">
+        <div class="footer-name-title">
+          (c) Vishnu Kurupath — HPC Notes
+        </div>
       </div>
-      <div class="footer-section">
-        <button class="footer-section-button" id="section-toggle">
-          <span class="section-label" id="current-section-label">Section</span>
-          <span class="caret">▲</span>
-        </button>
-        <ul class="section-menu" id="section-menu">
-          <!-- Filled by JS -->
-        </ul>
+      <div class="footer-center">
+        <div class="footer-section">
+          <button class="footer-section-button" id="section-toggle">
+            <span class="section-label" id="current-section-label">Section</span>
+            <span class="caret">▲</span>
+          </button>
+          <ul class="section-menu" id="section-menu">
+            <!-- Filled by JS -->
+          </ul>
+        </div>
+      </div>
+      <div class="footer-right">
+        <span class="footer-slide-number" id="footer-slide-number">–/–</span>
       </div>
     </div>
 
@@ -161,56 +197,98 @@
       const sectionMenu = document.getElementById('section-menu');
       const sectionToggle = document.getElementById('section-toggle');
       const currentSectionLabel = document.getElementById('current-section-label');
+      const footerSlideNumber = document.getElementById('footer-slide-number');
 
-      // Build menu from top-level sections after Markdown is rendered
+      // Parse section name from heading text, expecting "[Section] Title"
+      function parseSectionAndTitleFromHeading(headingEl, slideIndex) {
+        if (!headingEl) {
+          return {
+            section: `Slide ${slideIndex + 1}`,
+            title: `Slide ${slideIndex + 1}`
+          };
+        }
+        const raw = headingEl.textContent.trim();
+        const match = raw.match(/^\[(.+?)\]\s*(.*)$/);
+        if (match) {
+          const section = match[1].trim();
+          const title = match[2].trim() || section;
+          return { section, title };
+        } else {
+          return {
+            section: raw,
+            title: raw
+          };
+        }
+      }
+
+      // Build section list from slides based on section tags in headings
       function buildSectionMenu() {
         sectionMenu.innerHTML = '';
-        const slides = document.querySelectorAll('.reveal .slides > section');
+
+        const slides = Array.from(document.querySelectorAll('.reveal .slides > section'));
+        const sections = [];
+        const seenSections = new Set();
 
         slides.forEach((slide, index) => {
-          // Get title from data-title if present, else first heading
-          let title = slide.getAttribute('data-title');
-          if (!title) {
-            const h = slide.querySelector('h1, h2, h3, h4, h5, h6');
-            title = h ? h.textContent.trim() : `Slide ${index + 1}`;
+          const heading = slide.querySelector('h1, h2, h3, h4, h5, h6');
+          const info = parseSectionAndTitleFromHeading(heading, index);
+          // Use section name as grouping key
+          if (!seenSections.has(info.section)) {
+            seenSections.add(info.section);
+            sections.push({
+              section: info.section,
+              title: info.title,
+              firstIndex: index
+            });
           }
+          // Store section name on slide for quick lookup later
+          slide.dataset.sectionName = info.section;
+        });
 
+        sections.forEach((entry) => {
           const li = document.createElement('li');
           const btn = document.createElement('button');
-          btn.textContent = title;
-
+          btn.textContent = entry.section;
           btn.addEventListener('click', () => {
-            Reveal.slide(index, 0);
+            Reveal.slide(entry.firstIndex, 0);
             sectionMenu.style.display = 'none';
           });
-
           li.appendChild(btn);
           sectionMenu.appendChild(li);
         });
 
-        updateActiveSection();
+        updateFooterState();
       }
 
-      // Update which item is active and current label
-      function updateActiveSection() {
+      function updateFooterState() {
         const state = Reveal.getState();
         const hIndex = state.indexh || 0;
         const slides = document.querySelectorAll('.reveal .slides > section');
-        const buttons = sectionMenu.querySelectorAll('button');
+        const currentSlide = slides[hIndex];
 
-        buttons.forEach((btn, i) => {
-          btn.classList.toggle('active', i === hIndex);
+        // Update section label
+        let sectionName = currentSlide && currentSlide.dataset.sectionName;
+        if (!sectionName && currentSlide) {
+          const h = currentSlide.querySelector('h1, h2, h3, h4, h5, h6');
+          sectionName = parseSectionAndTitleFromHeading(h, hIndex).section;
+        }
+        if (sectionName) {
+          currentSectionLabel.textContent = sectionName;
+        }
+
+        // Update active item in menu
+        const buttons = sectionMenu.querySelectorAll('button');
+        buttons.forEach((btn) => {
+          btn.classList.remove('active');
+          if (btn.textContent === sectionName) {
+            btn.classList.add('active');
+          }
         });
 
-        const currentSlide = slides[hIndex];
-        let title = currentSlide && currentSlide.getAttribute('data-title');
-        if (!title && currentSlide) {
-          const h = currentSlide.querySelector('h1, h2, h3, h4, h5, h6');
-          title = h ? h.textContent.trim() : `Slide ${hIndex + 1}`;
-        }
-        if (title) {
-          currentSectionLabel.textContent = title;
-        }
+        // Update slide number in footer, mirroring Reveal's c/t
+        const total = slides.length;
+        const current = hIndex + 1;
+        footerSlideNumber.textContent = current + '/' + total;
       }
 
       // Toggle menu visibility
@@ -225,13 +303,12 @@
         sectionMenu.style.display = 'none';
       });
 
-      // Initialize after Reveal + Markdown are ready
       Reveal.on('ready', () => {
         buildSectionMenu();
       });
 
       Reveal.on('slidechanged', () => {
-        updateActiveSection();
+        updateFooterState();
       });
     </script>
   </body>
