@@ -1,5 +1,5 @@
 <!-- Title slide, optional in menu -->
-<!-- .slide: data-name="Title" -->
+<!-- .section: data-name="Title" -->
 Title
 ======
 V. P. Kurupath  
@@ -7,7 +7,7 @@ Conference / Date
 
 ---
 
-<!-- .slide: data-name="Introduction" -->
+<!-- .section: data-name="Introduction" -->
 ## Introduction
 
 - Point 1
@@ -15,7 +15,7 @@ Conference / Date
 
 ---
 
-<!-- .slide: data-name="Stepwise list" -->
+<!-- .section: data-name="Stepwise list" -->
 ## Stepwise list
 
 - First point <!-- .element: class="fragment" data-fragment-index="1" -->
@@ -24,7 +24,7 @@ Conference / Date
 
 ---
 
-<!-- .slide: data-name="Method vs. Results" -->
+<!-- .section: data-name="Method vs. Results" -->
 ## Method vs. Results
 
 <div class="two-columns">
@@ -48,7 +48,7 @@ Conference / Date
 
 ---
 
-<!-- .slide: data-name="Conclusion" -->
+<!-- .section: data-name="Conclusion" -->
 ## Conclusion
 
 - Summary
