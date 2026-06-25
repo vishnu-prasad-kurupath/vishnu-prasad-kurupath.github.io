@@ -48,16 +48,16 @@ HPC Notes — Conference / Date
 
 ### Method
 
-- Step 1
-- Step 2
+Imagine someone <!-- .element: class="fragment" data-fragment-index="1" -->
+pushing a block <!-- .element: class="fragment" data-fragment-index="2" -->
 
 </div>
 <div class="col">
 
 ### Results
 
-- R1
-- R2
+![HPC rack](https://example.com/images/hpc-rack.jpg) <!-- .element: class="fragment" data-fragment-index="3" -->
+
 
 </div>
 </div>
