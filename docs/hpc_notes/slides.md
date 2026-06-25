@@ -49,14 +49,14 @@ HPC Notes — Conference / Date
 ### Method
 
 Imagine someone <!-- .element: class="fragment" data-fragment-index="1" -->
-pushing a block <!-- .element: class="fragment" data-fragment-index="2" -->
+pushing a block <!-- .element: class="fragment" data-fragment-index="3" -->
 
 </div>
 <div class="col">
 
 ### Results
 
-![HPC rack](https://example.com/images/hpc-rack.jpg) <!-- .element: class="fragment" data-fragment-index="3" -->
+![HPC rack](https://example.com/images/hpc-rack.jpg) <!-- .element: class="fragment" data-fragment-index="2" -->
 
 
 </div>
